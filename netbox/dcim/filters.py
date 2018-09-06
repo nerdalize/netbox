@@ -377,7 +377,7 @@ class DeviceBayTemplateFilter(DeviceTypeComponentFilterSet):
         fields = ['name']
 
 
-class DeviceRoleFilter(django_filters.FilterSet):
+class DeviceRoleFilter(CustomFieldFilterSet, django_filters.FilterSet):
 
     class Meta:
         model = DeviceRole

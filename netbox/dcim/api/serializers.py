@@ -322,11 +322,11 @@ class DeviceBayTemplateSerializer(ValidatedModelSerializer):
 # Device roles
 #
 
-class DeviceRoleSerializer(ValidatedModelSerializer):
+class DeviceRoleSerializer(CustomFieldModelSerializer):
 
     class Meta:
         model = DeviceRole
-        fields = ['id', 'name', 'slug', 'color', 'vm_role']
+        fields = ['id', 'name', 'slug', 'color', 'vm_role', 'custom_fields']
 
 
 class NestedDeviceRoleSerializer(WritableNestedSerializer):

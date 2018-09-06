@@ -717,7 +717,7 @@ class DeviceBayTemplateCreateForm(ComponentForm):
 # Device roles
 #
 
-class DeviceRoleForm(BootstrapMixin, forms.ModelForm):
+class DeviceRoleForm(BootstrapMixin, CustomFieldForm):
     slug = SlugField()
 
     class Meta:

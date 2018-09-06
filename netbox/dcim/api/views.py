@@ -203,7 +203,7 @@ class DeviceBayTemplateViewSet(ModelViewSet):
 # Device roles
 #
 
-class DeviceRoleViewSet(ModelViewSet):
+class DeviceRoleViewSet(CustomFieldModelViewSet):
     queryset = DeviceRole.objects.all()
     serializer_class = serializers.DeviceRoleSerializer
     filter_class = filters.DeviceRoleFilter

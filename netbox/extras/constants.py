@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 # Models which support custom fields
 CUSTOMFIELD_MODELS = (
     'provider', 'circuit',                                         # Circuits
-    'site', 'rack', 'devicetype', 'device',                        # DCIM
+    'site', 'rack', 'devicetype', 'devicerole', 'device',          # DCIM
     'aggregate', 'prefix', 'ipaddress', 'vlan', 'vrf', 'service',  # IPAM
     'secret',                                                      # Secrets
     'tenant',                                                      # Tenancy

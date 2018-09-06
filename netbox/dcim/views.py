@@ -754,6 +754,7 @@ class DeviceRoleCreateView(PermissionRequiredMixin, ObjectEditView):
     permission_required = 'dcim.add_devicerole'
     model = DeviceRole
     model_form = forms.DeviceRoleForm
+    template_name = 'dcim/devicerole_edit.html'
     default_return_url = 'dcim:devicerole_list'
 
 

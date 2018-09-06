@@ -1047,7 +1047,7 @@ class DeviceBayTemplate(ComponentModel):
 #
 
 @python_2_unicode_compatible
-class DeviceRole(ChangeLoggedModel):
+class DeviceRole(ChangeLoggedModel, CustomFieldModel):
     """
     Devices are organized by functional role; for example, "Core Switch" or "File Server". Each DeviceRole is assigned a
     color to be used when displaying rack elevations. The vm_role field determines whether the role is applicable to
@@ -1065,6 +1065,11 @@ class DeviceRole(ChangeLoggedModel):
         default=True,
         verbose_name='VM Role',
         help_text='Virtual machines may be assigned to this role'
+    )
+    custom_field_values = GenericRelation(
+        to='extras.CustomFieldValue',
+        content_type_field='obj_type',
+        object_id_field='obj_id'
     )
 
     csv_headers = ['name', 'slug', 'color', 'vm_role']
