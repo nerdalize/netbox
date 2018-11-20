@@ -5,7 +5,6 @@
 !/netbox/reports/__init__.py
 /netbox/static
 .idea
-/*.sh
 !upgrade.sh
 fabfile.py
 *.swp
