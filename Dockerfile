@@ -11,12 +11,12 @@ RUN apk update && apk add \
       postgresql-client \
       ca-certificates \
       bash \
-      build-base \
       wget \
       libxslt \
       libxml2 \
       libffi \
     && apk add --virtual builddeps \
+      build-base \
       cyrus-sasl-dev \
       jpeg-dev \
       libffi-dev \
