@@ -28,11 +28,11 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: {{ .Values.ci.image }}:{{ .Values.ci.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
           - secretRef:
-              name: {{ include "netbox.name" . }}
+              name: {{ include "netbox.fullname" . }}
           env:
           - name: DB_USER
             valueFrom:
@@ -50,11 +50,6 @@ spec:
             value: "5432"
           - name: DB_NAME
             value: netbox
-          - name: SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                key: secretkey
-                name: {{ include "netbox.fullname" . }}
           ports:
           - name: http
             containerPort: 80
