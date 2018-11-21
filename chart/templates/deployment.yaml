@@ -26,6 +26,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         ci.nerdalize.com/commit: "{{ .Values.ci.commit.sha }}"
     spec:
+      serviceAccountName: {{ include "netbox.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.ci.image }}:{{ .Values.ci.tag }}
@@ -38,14 +39,14 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: username
-                name: netbox.{{ include "netbox.fullname" . }}.credentials
+                name: netbox.infra-{{ include "netbox.fullname" . }}.credentials
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: password
-                name: netbox.{{ include "netbox.fullname" . }}.credentials
+                name: netbox.infra-{{ include "netbox.fullname" . }}.credentials
           - name: DB_HOST
-            value: {{ include "netbox.fullname" . }}
+            value: infra-{{ include "netbox.fullname" . }}
           - name: DB_PORT
             value: "5432"
           - name: DB_NAME

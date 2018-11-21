@@ -4,7 +4,7 @@ metadata:
   annotations:
     ci.nerdalize.com/pipeline: "{{ .Values.ci.project.url }}/pipelines/{{ .Values.ci.pipeline.id }}"
     ci.nerdalize.com/author: "{{ .Values.ci.gitlab.user_name }} <{{ .Values.ci.gitlab.user_email }}>"
-  name: {{ include "netbox.fullname" . }}
+  name: infra-{{ include "netbox.fullname" . }}
   labels:
     app.kubernetes.io/name: {{ include "netbox.name" . }}
     helm.sh/chart: {{ include "netbox.chart" . }}
