@@ -12,10 +12,12 @@ RUN apk update && apk add \
       ca-certificates \
       bash \
       build-base \
-			wget \
+      wget \
+      libxslt \
+      libxml2 \
+      libffi \
     && apk add --virtual builddeps \
       cyrus-sasl-dev \
-      graphviz \
       jpeg-dev \
       libffi-dev \
       libxml2-dev \

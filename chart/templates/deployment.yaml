@@ -58,11 +58,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: 8000
+              name: http
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: 8000
+              name: http
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

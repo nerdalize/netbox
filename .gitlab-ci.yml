@@ -40,7 +40,6 @@ build release:
   - envsubst < chart/announcement.json | tee filled.json
   - "[[ $CI_COMMIT_TAG ]] && curl -XPOST -H 'Content-type: application/json' --data @filled.json $SLACK_RELEASE_WEBHOOK || echo 'Not a tagged release, skipping announcement'"
 
-
 deploy develop:
   <<: *deploy_template
   only:
