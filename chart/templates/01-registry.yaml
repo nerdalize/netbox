@@ -1,0 +1,13 @@
+# OMG DID YOU JUST COMMIT A TOP SECRET TO GIT?!
+# yes. yes i did. but i'll own it and make it better - pieter
+#
+# This is fairly easily rotated though and kubeseal doesn't work for multiple namespaces
+# we should probably fork this out to a specific env init template though
+# Ref: https://gitlab.com/gitlab-org/gitlab-ce/issues/42861
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5yZWYubmx6ZS5ubCI6eyJ1c2VybmFtZSI6ImltYWdlcHVsbCIsInBhc3N3b3JkIjoiRlJ4dFhXcUtkOEJzdWlzb0I4azIiLCJhdXRoIjoiYVcxaFoyVndkV3hzT2taU2VIUllWM0ZMWkRoQ2MzVnBjMjlDT0dzeSJ9fX0=

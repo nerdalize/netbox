@@ -1,0 +1,42 @@
+{
+    "attachments": [
+      {
+      "pretext": "New release <${CI_PROJECT_URL}/tags/${CI_COMMIT_TAG}|${CI_COMMIT_TAG}> for ${CI_PROJECT_NAME} launched!",
+      "text": "```${CI_COMMIT_MESSAGE}```",
+      "mrkdwn_in": ["text", "pretext", "fields"],
+        "fields": [
+            {
+                "title": "Project",
+                "value": "${CI_PROJECT_NAME}",
+                "short": true
+            },
+            {
+                "title": "Environment",
+                "value": "${CI_ENVIRONMENT_NAME}",
+                "short": true
+            },
+            {
+                "title": "URL",
+                "value": "<${CI_ENVIRONMENT_URL}>",
+                "short": true
+            },
+            {
+                "title": "Release coordinator",
+                "value": "${GITLAB_USER_NAME}",
+                "short": true
+            },
+            {
+                "title": "Pipeline",
+                "value": "<${CI_PROJECT_URL}/pipelines/${CI_PIPELINE_ID}|:gitlab:>",
+                "short": true
+            },
+            {
+                "title": "Job",
+                "value": "<${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}|:gitlab:>",
+                "short": true
+            }
+            ],
+            "color": "good"
+        }
+    ]
+}

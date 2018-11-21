@@ -1,0 +1,33 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+{{- if .Values.ingress.acme }}
+    kubernetes.io/tls-acme: "true"
+{{- end }}
+    kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: gitlab-issuer
+    ci.nerdalize.com/author: "{{ .Values.ci.gitlab.user_name }} <{{ .Values.ci.gitlab.user_email }}>"
+    ci.nerdalize.com/pipeline: "{{ .Values.ci.project.url }}/pipelines/{{ .Values.ci.pipeline.id }}"
+    nginx.ingress.kubernetes.io/whitelist-source-range: {{ default "185.82.184.0/22,185.167.252.0/22" .Values.ingress.ipwhitelist }}
+  labels:
+    app.kubernetes.io/name: {{ include "netbox.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "netbox.chart" . }}
+  name: {{ include "netbox.fullname" . }}
+spec:
+  rules:
+  - host: {{ .Values.ci.environment.fqdn }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ include "netbox.fullname" . }}
+          servicePort: http
+        path: /
+  tls:
+  - hosts:
+    - {{ .Values.ci.environment.fqdn }}
+    secretName: {{ default .Values.ci.environment.fqdn .Values.ingress.tls.secretName }}
+{{- end }}

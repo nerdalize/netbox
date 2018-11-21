@@ -1,0 +1,14 @@
+apiVersion: acid.zalan.do/v1
+kind: postgresql
+metadata:
+  annotations:
+    ci.nerdalize.com/pipeline: "{{ .Values.ci.project.url }}/pipelines/{{ .Values.ci.pipeline.id }}"
+    ci.nerdalize.com/author: "{{ .Values.ci.gitlab.user_name }} <{{ .Values.ci.gitlab.user_email }}>"
+  name: {{ include "netbox.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "netbox.name" . }}
+    helm.sh/chart: {{ include "netbox.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+{{ toYaml .Values.database | indent 2 }}

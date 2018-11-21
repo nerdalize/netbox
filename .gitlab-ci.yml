@@ -18,3 +18,56 @@ build release:
   - tags
   script:
   - /kaniko/executor --cache=true --context ${CI_PROJECT_DIR}/ --dockerfile ${CI_PROJECT_DIR}/Dockerfile --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}
+
+.k8s deploy template: &deploy_template
+  dependencies: []
+  image: $CI_REGISTRY/nerdalize/ci_k8s_runner
+  stage: deploy
+  script:
+  - env
+  - helm upgrade -i --wait --namespace ${K8S_NAMESPACE} -f chart/values.yaml
+      --set ci.commit.sha=${CI_COMMIT_SHA},ci.environment.slug=${CI_ENVIRONMENT_SLUG},ci.environment.url=${CI_ENVIRONMENT_URL},ci.environment.fqdn=$(basename $CI_ENVIRONMENT_URL),ci.image=${CI_REGISTRY_IMAGE},ci.tag=${DOCKERTAG}
+      --set ingress.acme=true
+      --set "ci.gitlab.user_name=${GITLAB_USER_NAME},ci.gitlab.user_email=${GITLAB_USER_EMAIL}"
+      --set "ci.project.url=${CI_PROJECT_URL},ci.pipeline.id=${CI_PIPELINE_ID}"
+      netbox-${CI_ENVIRONMENT_SLUG} ./chart
+  after_script:
+  - envsubst < chart/announcement.json | tee filled.json
+  - "[[ $CI_COMMIT_TAG ]] && curl -XPOST -H 'Content-type: application/json' --data @filled.json $SLACK_RELEASE_WEBHOOK || echo 'Not a tagged release, skipping announcement'"
+
+
+deploy develop:
+  <<: *deploy_template
+  only:
+  - master
+  - nlz/ci
+  variables:
+    K8S_NAMESPACE: develop
+    DOCKERTAG: latest
+  environment:
+    name: develop
+    url: https://dev.netbox.tst.nlze.nl
+
+deploy acceptance:
+  <<: *deploy_template
+  only:
+  - tags
+  variables:
+    K8S_NAMESPACE: acceptance
+    DOCKERTAG: $CI_COMMIT_TAG
+  environment:
+    name: acceptance
+    url: https://acceptance.netbox.tst.nlze.nl
+
+deploy production:
+  <<: *deploy_template
+  only:
+  - tags
+  stage: deploy production
+  when: manual
+  variables:
+    K8S_NAMESPACE: production
+    DOCKERTAG: $CI_COMMIT_TAG
+  environment:
+    name: production
+    url: https://netbox.infra.nlze.nl

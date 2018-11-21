@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    ci.nerdalize.com/author: "{{ .Values.ci.gitlab.user_name }} <{{ .Values.ci.gitlab.user_email }}>"
+    ci.nerdalize.com/pipeline: "{{ .Values.ci.project.url }}/pipelines/{{ .Values.ci.pipeline.id }}"
+  name: {{ include "netbox.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "netbox.name" . }}
+    helm.sh/chart: {{ include "netbox.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "netbox.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+			annotations:
+				ci.nerdalize.com/author: "{{ .Values.ci.gitlab.user_name }} <{{ .Values.ci.gitlab.user_email }}>"
+				ci.nerdalize.com/pipeline: "{{ .Values.ci.project.url }}/pipelines/{{ .Values.ci.pipeline.id }}"
+      labels:
+        app.kubernetes.io/name: {{ include "netbox.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        ci.nerdalize.com/commit: "{{ .Values.ci.commit.sha }}"
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+					- secretRef:
+              name: {{ include "netbox.name" . }}
+          env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: netbox.{{ include "epoch.fullname" . }}.credentials
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: netbox.{{ include "epoch.fullname" . }}.credentials
+          - name: DB_HOST
+            value: {{ include "epoch.fullname" . }}
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_NAME
+            value: netbox
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
