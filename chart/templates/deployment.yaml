@@ -18,9 +18,9 @@ spec:
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
-			annotations:
-				ci.nerdalize.com/author: "{{ .Values.ci.gitlab.user_name }} <{{ .Values.ci.gitlab.user_email }}>"
-				ci.nerdalize.com/pipeline: "{{ .Values.ci.project.url }}/pipelines/{{ .Values.ci.pipeline.id }}"
+      annotations:
+        ci.nerdalize.com/author: "{{ .Values.ci.gitlab.user_name }} <{{ .Values.ci.gitlab.user_email }}>"
+        ci.nerdalize.com/pipeline: "{{ .Values.ci.project.url }}/pipelines/{{ .Values.ci.pipeline.id }}"
       labels:
         app.kubernetes.io/name: {{ include "netbox.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
@@ -31,7 +31,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
-					- secretRef:
+          - secretRef:
               name: {{ include "netbox.name" . }}
           env:
           - name: DB_USER
