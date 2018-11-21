@@ -38,18 +38,23 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: username
-                name: netbox.{{ include "epoch.fullname" . }}.credentials
+                name: netbox.{{ include "netbox.fullname" . }}.credentials
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: password
-                name: netbox.{{ include "epoch.fullname" . }}.credentials
+                name: netbox.{{ include "netbox.fullname" . }}.credentials
           - name: DB_HOST
-            value: {{ include "epoch.fullname" . }}
+            value: {{ include "netbox.fullname" . }}
           - name: DB_PORT
             value: "5432"
           - name: DB_NAME
             value: netbox
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                key: secretkey
+                name: {{ include "netbox.fullname" . }}
           ports:
           - name: http
             containerPort: 80
