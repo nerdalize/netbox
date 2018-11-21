@@ -7,7 +7,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: registry
+  name: {{ include "netbox.fullname" . }}-registry
 type: kubernetes.io/dockerconfigjson
 data:
   .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5yZWYubmx6ZS5ubCI6eyJ1c2VybmFtZSI6ImltYWdlcHVsbCIsInBhc3N3b3JkIjoiRlJ4dFhXcUtkOEJzdWlzb0I4azIiLCJhdXRoIjoiYVcxaFoyVndkV3hzT2taU2VIUllWM0ZMWkRoQ2MzVnBjMjlDT0dzeSJ9fX0=
