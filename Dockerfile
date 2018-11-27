@@ -11,7 +11,7 @@ WORKDIR /usr/src/netbox/
 ADD requirements.txt /usr/src/netbox
 RUN pip install --no-cache-dir -r requirements.txt
 
-ADD netbox /usr/src/netbox
+ADD netbox/ /usr/src/netbox/netbox
 
 WORKDIR /usr/src/netbox/netbox
 
