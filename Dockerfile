@@ -1,40 +1,23 @@
-FROM python:3-alpine
+FROM python:3
+
+# Install dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        sudo graphviz postgresql-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/netbox/
 ADD requirements.txt /usr/src/netbox
-
-# Install dependencies
-RUN apk update && apk add \
-      bash \
-      sudo \
-      graphviz \
-      postgresql-client \
-      ca-certificates \
-      bash \
-      wget \
-      libxslt \
-      libxml2 \
-      libffi \
-    && apk add --virtual builddeps \
-      build-base \
-      cyrus-sasl-dev \
-      jpeg-dev \
-      libffi-dev \
-      libxml2-dev \
-      libxslt-dev \
-      openldap-dev \
-      postgresql-dev \
-      ttf-ubuntu-font-family \
-    && pip install --no-cache-dir -r requirements.txt \
-    && apk del builddeps
+RUN pip install --no-cache-dir -r requirements.txt
 
 ADD netbox /usr/src/netbox
-# Change workdir
-WORKDIR /usr/src/netbox/
+
+WORKDIR /usr/src/netbox/netbox
 
 # Create user
-RUN addgroup -g 1000 netbox \
-    && adduser -D -u 1000 -G netbox -h /usr/src/netbox netbox \
+RUN groupadd -g 1000 netbox \
+    && useradd -u 1000 -g 1000 -d /usr/src/netbox netbox \
     && chown -Rh netbox:netbox /usr/src/netbox
 
 # Setup entrypoint
