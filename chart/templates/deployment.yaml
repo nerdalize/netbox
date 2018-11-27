@@ -40,7 +40,7 @@ spec:
               secretKeyRef:
                 key: username
                 name: netbox.infra-{{ include "netbox.fullname" . }}.credentials
-          - name: DB_PASSWORD
+          - name: DB_PASS
             valueFrom:
               secretKeyRef:
                 key: password
