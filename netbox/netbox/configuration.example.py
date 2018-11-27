@@ -17,6 +17,7 @@ DATABASE = {
     'PASSWORD': '',           # PostgreSQL password
     'HOST': 'localhost',      # Database server
     'PORT': '',               # Database port (leave blank for default)
+    'OPTIONS': "{'sslmode': 'require'}",
 }
 
 # This key is used for secure generation of random numbers and strings. It must never be exposed outside of this file.
