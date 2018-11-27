@@ -31,7 +31,7 @@ initialize_config() {
     local allowed_hosts_raw="$ALLOWED_HOSTS"
     read -ra allowed_hosts_raw <<<"$allowed_hosts_raw"
 
-    local allowed_hosts=""
+    local allowed_hosts="'$HOSTNAME',"
 
     for host in "${allowed_hosts_raw[@]}"; do
         allowed_hosts="$allowed_hosts '$host',"

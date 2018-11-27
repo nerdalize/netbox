@@ -35,6 +35,8 @@ spec:
           - secretRef:
               name: {{ include "netbox.fullname" . }}
           env:
+          - name: ALLOWED_HOSTS
+            value: "localhost {{ .Values.ci.environment.fqdn }}"
           - name: DB_USER
             valueFrom:
               secretKeyRef:
