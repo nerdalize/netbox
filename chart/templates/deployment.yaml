@@ -55,20 +55,26 @@ spec:
             value: netbox
           - name: LOGIN_REQUIRED
             value: "True"
-          ports:
-          - name: http
-            containerPort: 80
-            protocol: TCP
           livenessProbe:
             httpGet:
               path: /
               port: 8000
               name: http
+              httpHeaders:
+              - name: Host
+                value: "{{ .Values.ci.environment.fqdn }}"
           readinessProbe:
             httpGet:
               path: /
               port: 8000
               name: http
+              httpHeaders:
+              - name: Host
+                value: "{{ .Values.ci.environment.fqdn }}"
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
